@@ -1,0 +1,42 @@
+[package]
+name = "convert-to-rust"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+description = "Reverse engineer any project (source, archive, binary or git URL) and rebuild it in Rust."
+license = "MIT"
+readme = "README.md"
+keywords = ["reverse-engineering", "rust", "migration", "transpiler", "scaffold"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "c2r"
+path = "src/main.rs"
+
+[features]
+default = ["ai"]
+# Optional AI-assisted translation through the Anthropic Messages API.
+ai = ["dep:ureq"]
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive", "env"] }
+flate2 = "1"
+goblin = "0.9"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tar = "0.4"
+tempfile = "3"
+toml = "0.8"
+ureq = { version = "2", features = ["json"], optional = true }
+walkdir = "2"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
